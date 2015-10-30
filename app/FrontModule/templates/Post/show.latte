@@ -6,7 +6,7 @@
 
 {block title}<h1>{$post->title}</h1>{/block}
 
-<a n:href="edit $post->id">Edit this post</a>
+<a n:href="edit $post->id" n:if="$user->loggedIn">Edit this post</a>
 
 <div class="post">{$post->content}</div>
 

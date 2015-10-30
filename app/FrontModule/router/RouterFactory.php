@@ -18,6 +18,9 @@ class RouterFactory
 	{
 		$router = new RouteList;
 
+		$router[] = new Route('/login/', 'Front:Sign:in');
+		$router[] = new Route('/logout/', 'Front:Sign:Out');
+
 		$router[] = new Route('/blog/<action>[/<id>]', 'Front:Post:Show');
 
 		$router[] = new Route('<presenter>/<action>[/<id>]', 'Front:Default:Default');

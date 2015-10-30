@@ -19,9 +19,7 @@ class SignPresenter extends BasePresenter
 	protected function createComponentSignInForm()
 	{
 		$form = $this->factory->create();
-		$form->onSuccess[] = function ($form) {
-			$form->getPresenter()->redirect('Homepage:');
-		};
+		$form->onSuccess[] = array($this, 'signInFormSucceeded');
 		return $form;
 	}
 
@@ -30,7 +28,20 @@ class SignPresenter extends BasePresenter
 	{
 		$this->getUser()->logout();
 		$this->flashMessage('You have been signed out.');
-		$this->redirect('in');
+		$this->redirect('Default:Default');
+	}
+
+	public function signInFormSucceeded($form)
+	{
+		$values = $form->values;
+
+		try {
+			$this->getUser()->login($values->username, $values->password);
+			$this->redirect('Default:Default');
+
+		} catch (Nette\Security\AuthenticationException $e) {
+			$form->addError('Incorrect username or password.');
+		}
 	}
 
 }

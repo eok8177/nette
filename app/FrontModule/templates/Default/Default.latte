@@ -11,5 +11,6 @@
 		<div>{$post->content}</div>
 	</div>
 
-	<a n:href="Post:create">Write new post</a>
+	<a n:href="Post:create" n:if="$user->loggedIn">Create post</a>
+{* 	{if $user->loggedIn}<a n:href="Post:create">Create post</a>{/if} *}
 {/block}
