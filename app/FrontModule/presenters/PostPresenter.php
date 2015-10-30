@@ -59,4 +59,42 @@ class PostPresenter extends BasePresenter
 		$this->flashMessage('Thank you for your comment', 'success');
 		$this->redirect('this');
 	}
+
+	protected function createComponentPostForm()
+	{
+		$form = new Form;
+		$form->addText('title', 'Title:')
+			->setRequired();
+		$form->addTextArea('content', 'Content:')
+			->setRequired();
+
+		$form->addSubmit('send', 'Save and publish');
+		$form->onSuccess[] = array($this, 'postFormSucceeded');
+
+		return $form;
+	}
+
+	public function postFormSucceeded($form, $values)
+	{
+		$postId = $this->getParameter('postId');
+
+		if ($postId) {
+			$post = $this->database->table('posts')->get($postId);
+			$post->update($values);
+		} else {
+			$post = $this->database->table('posts')->insert($values);
+		}
+
+		$this->flashMessage('Post was published', 'success');
+		$this->redirect('show', $post->id);
+	}
+
+	public function actionEdit($postId)
+	{
+		$post = $this->database->table('posts')->get($postId);
+		if (!$post) {
+			$this->error('Post not found');
+		}
+		$this['postForm']->setDefaults($post->toArray());
+	}
 }

@@ -6,6 +6,8 @@
 
 {block title}<h1>{$post->title}</h1>{/block}
 
+<a n:href="edit $post->id">Edit this post</a>
+
 <div class="post">{$post->content}</div>
 
 <h2>Post new comment</h2>
